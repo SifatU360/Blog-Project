@@ -24,6 +24,45 @@ const UserSchema = new Schema<TUser, UserModel>(
   },
   { timestamps: true },
 );
+// UserSchema.set('toJSON', {
+//   transform: (doc, ret) => {
+//     delete ret.__v;
+//     delete ret.createdAt;
+//     delete ret.updatedAt;
+//   },
+// });
 
+// UserSchema.pre('save', async function (next) {
+//   this.password = await bcrypt.hash(
+//     this.password,
+//     // Number(config.bcrypt_salt_rounds),
+//   );
+//   next();
+// });
+
+// UserSchema.post('save', function (doc, next) {
+//   doc.password = '';
+//   next();
+// });
+
+// UserSchema.statics.isUserExistsByCustomEmail = async function (email: string) {
+//   return await User.findOne({ email }).select('+password');
+// };
+
+// UserSchema.statics.isPasswordMatched = async function (
+//   plainTextPassword,
+//   hashedPassword,
+// ) {
+//   return await bcrypt.compare(plainTextPassword, hashedPassword);
+// };
+
+// UserSchema.statics.isJWTIssuedBeforePasswordChanged = function (
+//   passwordChangedTimestamp: Date,
+//   jwtIssuedTimestamp: number,
+// ) {
+//   const passwordChangedTime =
+//     new Date(passwordChangedTimestamp).getTime() / 1000;
+//   return passwordChangedTime > jwtIssuedTimestamp;
+// };
 
 export const User = model<TUser, UserModel>('User', UserSchema);
