@@ -204,7 +204,7 @@ The goal of this project is to develop a 🔙 backend for a 🖊️ blogging �
   }
   ```
 
-  #### 4️⃣📜 Get All Blogs (Public)
+#### 4️⃣📜 Get All Blogs (Public)
 - **📩 GET** `/api/blogs/:id`
 - **Description**: Allows a logged-in user to delete their own blog by its ID.
 
@@ -248,7 +248,7 @@ The goal of this project is to develop a 🔙 backend for a 🖊️ blogging �
   }
   ```
 
-  #### 2️⃣ ❌ Delete Blog
+#### 2️⃣ ❌ Delete Blog
 - **📩 DELETE** `/api/admin/blogs/:id`
 - **Description**: Allows an admin to delete any blog by its ID.
 - **Request Header**: `Authorization: Bearer <admin_token>`
