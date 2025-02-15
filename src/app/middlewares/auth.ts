@@ -1,23 +1,28 @@
-import { NextFunction, Request, Response } from "express";
-import httpStatus from "http-status";
-import jwt, { JwtPayload } from "jsonwebtoken";
-import config from "../config";
-import AppError from "../errors/AppError";
-import { User } from "../modules/user/user.model";
-import { IUserRole } from "../modules/user/user.interface";
-import catchAsync from "../utils/catchAsync";
+import { NextFunction, Request, Response } from 'express';
+import httpStatus from 'http-status';
+import jwt, { JwtPayload } from 'jsonwebtoken';
+import config from '../config';
+import AppError from '../errors/AppError';
+import { User } from '../modules/user/user.model';
+import { TUserRole } from '../modules/user/user.interface';
+import catchAsync from '../utils/catchAsync';
 
-const auth = (...requiredRoles: IUserRole[]) => {
+const auth = (...requiredRoles: TUserRole[]) => {
   return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const authHeader = req.headers.authorization;
+ 
 
     // Check if the token is missing
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      throw new AppError(httpStatus.UNAUTHORIZED, "You are not authorized!");
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      throw new AppError(httpStatus.UNAUTHORIZED, 'You are not Authorized!');
     }
 
     // Extract the token
-    const token = authHeader.split(" ")[1];
+    const token = authHeader.split(' ')[1];
+
+
+    // console.log("Received token:", token);
+
 
     // checking if the given token is valid
     const decoded = jwt.verify(
@@ -27,21 +32,24 @@ const auth = (...requiredRoles: IUserRole[]) => {
 
     const { role, email } = decoded;
 
+
+    // console.log("Decoded token:", decoded); 
+
     // checking if the user is exist
     const user = await User.isUserExistsByCustomEmail(email);
 
     if (!user) {
-      throw new AppError(httpStatus.NOT_FOUND, "This user is not found!");
+      throw new AppError(httpStatus.NOT_FOUND, 'This user is not found!');
     }
 
-    // const isBlocked = user?.isBlocked;
+    const isBlocked = user?.isBlocked;
 
-    // if (isBlocked) {
-    //   throw new AppError(httpStatus.FORBIDDEN, "This user is blocked!");
-    // }
+    if (isBlocked) {
+      throw new AppError(httpStatus.FORBIDDEN, 'This user is blocked!');
+    }
 
     if (requiredRoles && !requiredRoles.includes(role)) {
-      throw new AppError(httpStatus.UNAUTHORIZED, "You are not authorized!");
+      throw new AppError(httpStatus.UNAUTHORIZED, 'You are not Authorized!');
     }
 
     req.user = decoded as JwtPayload;

@@ -1,13 +1,14 @@
-// import catchAsync from "../../utils/catchAsync";
-// import sendResponse from "../../utils/sendResponse";
-import { AdminServices } from "./admin.service";
-import httpStatus from "http-status";
+
+import catchAsync from '../../utils/catchAsync';
+import sendResponse from '../../utils/sendResponse';
+import { AdminServices } from './admin.service';
+import httpStatus from 'http-status';
 
 const blockUser = catchAsync(async (req, res) => {
   await AdminServices.blockUser(req.params.userId);
   sendResponse(res, {
     success: true,
-    message: "User blocked successfully",
+    message: 'User blocked successfully',
     statusCode: httpStatus.OK,
   });
 });
@@ -16,7 +17,7 @@ const deleteBlogByAdmin = catchAsync(async (req, res) => {
   await AdminServices.deleteBlogByAdmin(req.params.id);
   sendResponse(res, {
     success: true,
-    message: "Blog deleted successfully",
+    message: 'Blog deleted successfully',
     statusCode: httpStatus.OK,
   });
 });

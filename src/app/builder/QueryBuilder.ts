@@ -1,4 +1,4 @@
-import { FilterQuery, Query } from "mongoose";
+import { FilterQuery, Query } from 'mongoose';
 
 class QueryBuilder<T> {
   public modelQuery: Query<T[], T>;
@@ -10,13 +10,15 @@ class QueryBuilder<T> {
   }
 
   search(searchableFields: string[]) {
-    const searchTerm = (this.query?.search as string) || "";
+    const searchTerm = (this.query?.search as string) || '';
     if (searchTerm) {
       this.modelQuery = this.modelQuery.find({
-        $or: searchableFields.map((field) => ({
-          [field]: { $regex: searchTerm, $options: "i" },
-        }) as FilterQuery<T>,
-    ),
+        $or: searchableFields.map(
+          (field) =>
+            ({
+              [field]: { $regex: searchTerm, $options: 'i' },
+            }) as FilterQuery<T>,
+        ),
       });
     }
     return this;
@@ -24,7 +26,7 @@ class QueryBuilder<T> {
 
   filter() {
     const queryObj = { ...this.query };
-    const excludeFields = ["search", "sortBy", "sortOrder"];
+    const excludeFields = ['search', 'sortBy', 'sortOrder'];
     excludeFields.forEach((el) => delete queryObj[el]);
     if (queryObj.filter) {
       queryObj.author = queryObj.filter;
@@ -37,8 +39,8 @@ class QueryBuilder<T> {
   }
 
   sort() {
-    const sortBy = (this.query?.sortBy as string) || "createdAt";
-    const sortOrder = (this.query?.sortOrder as string) === "asc" ? 1 : -1;
+    const sortBy = (this.query?.sortBy as string) || 'createdAt';
+    const sortOrder = (this.query?.sortOrder as string) === 'asc' ? 1 : -1;
     this.modelQuery = this.modelQuery.sort({ [sortBy]: sortOrder });
     return this;
   }
